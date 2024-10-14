@@ -1,0 +1,26 @@
+package com.olifarhaan.domains;
+
+public enum Feature {
+    WIFI,
+    TV,
+    AIR_CONDITIONER,
+    ELECTRIC_KETTLE,
+    HAIR_DRYER,
+    PRIVATE_BATHROOM,
+    TOWELS,
+    DVD_PLAYER,
+    FREE_WIFI,
+    RADIO,
+    TELEPHONE,
+    AIR_CONDITIONING,
+    ALARM_CLOCK,
+    HYPOALLERGENIC,
+    LINENS,
+    COFFEE_MAKER,
+    MINI_BAR,
+    DAILY_HOUSEKEEPING,
+    CARPETING,
+    DESK,
+    SOFA,
+    HIGH_CHAIR
+}

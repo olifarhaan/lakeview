@@ -1,0 +1,40 @@
+services:
+  mysql:
+    container_name: mysqlhost
+    image: mysql:8.0
+    ports:
+      - "3307:3306"
+    environment:
+      - MYSQL_DATABASE=boot_starter_security_db
+      - MYSQL_ROOT_PASSWORD=password
+    volumes:
+      - mysql_data:/var/lib/mysql
+    restart: always
+    networks:
+      - boot-starter-security-network
+
+  app:
+    container_name: boot-starter-security-app
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "8080:8080"
+    depends_on:
+      - mysql
+    env_file: ".env"
+    networks:
+      - boot-starter-security-network
+
+  python:
+    container_name: python-test
+    image: python:3.9
+    networks:
+      - boot-starter-security-network
+
+volumes:
+  mysql_data:
+
+networks:
+  boot-starter-security-network:
+    driver: bridge
