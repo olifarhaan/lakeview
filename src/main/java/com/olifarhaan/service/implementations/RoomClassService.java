@@ -6,6 +6,7 @@ import java.util.Optional;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
 
 import com.olifarhaan.model.RoomClass;
@@ -39,9 +40,10 @@ public class RoomClassService implements IRoomClassService {
     }
 
     @Override
+    @Transactional(readOnly = true)
     public List<RoomClassResponse> findByAvailability(LocalDate checkInDate, LocalDate checkOutDate,
             @Nullable String roomClassId) {
-        return roomClassRepository.findByAvailability(checkInDate, checkOutDate, roomClassId);
+        return roomClassRepository.findRoomClassAvailability(checkInDate, checkOutDate, roomClassId);
     }
 
     @Override

@@ -2,6 +2,8 @@ package com.olifarhaan.model;
 
 import java.time.LocalDate;
 
+import org.springframework.data.annotation.Version;
+
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.olifarhaan.request.UserRegistrationRequest;
 
@@ -43,6 +45,9 @@ public class User extends BaseEntity {
 	private Address address;
 
 	private LocalDate dateOfBirth;
+
+	@Version
+	private Long version;
 
 	public enum Role {
 		ADMIN,

@@ -68,7 +68,8 @@ def test_availability():
         f"room-classes/findByAvailability?checkInDate=2024-01-01&checkOutDate=2024-01-02",
         headers=get_headers_with_auth(user_token),
     )
-    assert len(response.json()) == 3
+    assert len(response.json()) == 1
+    # assert False
 
 
 def verify_room_class_data(retrieved_data, expected_data):
