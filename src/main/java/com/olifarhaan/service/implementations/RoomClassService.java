@@ -42,8 +42,8 @@ public class RoomClassService implements IRoomClassService {
     @Override
     @Transactional(readOnly = true)
     public List<RoomClassResponse> findByAvailability(LocalDate checkInDate, LocalDate checkOutDate,
-            @Nullable String roomClassId) {
-        return roomClassRepository.findRoomClassAvailability(checkInDate, checkOutDate, roomClassId);
+            @Nullable String roomClassId, @Nullable Integer guestCount) {
+        return roomClassRepository.findRoomClassAvailability(checkInDate, checkOutDate, roomClassId, guestCount);
     }
 
     @Override

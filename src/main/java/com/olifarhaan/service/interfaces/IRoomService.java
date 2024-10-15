@@ -6,6 +6,7 @@ import java.util.Optional;
 
 import com.olifarhaan.model.Room;
 import com.olifarhaan.request.RoomRequest;
+import com.olifarhaan.response.RoomWithBasePrice;
 
 /**
  * @author M. Ali Farhan
@@ -24,5 +25,6 @@ public interface IRoomService {
 
     long countAvailableRoomsByRoomClass(LocalDate checkInDate, LocalDate checkOutDate, String roomClassId);
 
-    Optional<Room> findOneAvailableRoomByRoomClass(LocalDate checkInDate, LocalDate checkOutDate, String roomClassId);
+    Optional<RoomWithBasePrice> findOneAvailableRoomByRoomClass(LocalDate checkInDate, LocalDate checkOutDate,
+            String roomClassId);
 }

@@ -19,6 +19,8 @@ public class RoomClassRequest {
     private String description;
     @Positive
     private double basePrice;
+    @Positive
+    private int maxGuestCount;
     private List<String> images = new ArrayList<>();
     @NotEmpty
     private List<Feature> features;

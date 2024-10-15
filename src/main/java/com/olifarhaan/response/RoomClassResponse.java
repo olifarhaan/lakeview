@@ -1,9 +1,6 @@
 package com.olifarhaan.response;
 
-import java.util.List;
-
-import com.olifarhaan.domains.BedType;
-import com.olifarhaan.domains.Feature;
+import com.olifarhaan.model.RoomClass;
 
 // public interface RoomClassResponse {
 // 	String getId();
@@ -24,13 +21,7 @@ import com.olifarhaan.domains.Feature;
 // }
 
 public record RoomClassResponse(
-		String id,
-		String title,
-		String description,
-		double basePrice,
-		long availableRooms,
-		List<Feature> features,
-		List<BedType> bedTypes,
-		List<String> images) {
+		RoomClass roomClass,
+		Long availableRooms) {
 
 }

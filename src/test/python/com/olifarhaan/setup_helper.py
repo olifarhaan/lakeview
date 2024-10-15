@@ -47,7 +47,8 @@ def setup_room_class(user_token, data={}):
         "description": f"{get_unique_id('RoomClass')}",
         "basePrice": 100.00,
         "features": ['HAIR_DRYER', 'HYPOALLERGENIC', 'LINENS', 'PRIVATE_BATHROOM', 'TV'],
-        "bedTypes": ['SINGLE', 'KING']
+        "bedTypes": ['SINGLE', 'KING'],
+        "maxGuestCount": 3
     }
     room_class_data.update(data)
     response = post_request("room-classes", room_class_data, headers=get_headers_with_auth(user_token))
@@ -80,3 +81,16 @@ def setup_rooms(user_token, noOfRooms, roomClassId=None, floorId=None):
         rooms.append(room_data)
     rooms.reverse()
     return rooms
+
+
+def setup_booking(user_token, data={}):
+    booking_data = {
+        "checkInDate": (datetime.now() + timedelta(days=1)).isoformat().split('T')[0],
+        "checkOutDate": (datetime.now() + timedelta(days=4)).isoformat().split('T')[0],
+        "roomClassId": setup_room_class(user_token)[0],
+        "guestCount": 2
+    }
+    booking_data.update(data)
+    response = post_request("bookings", booking_data, headers=get_headers_with_auth(user_token))
+    saved_booking_data = response.json()
+    return saved_booking_data["id"], saved_booking_data

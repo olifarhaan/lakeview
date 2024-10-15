@@ -36,6 +36,9 @@ public class RoomClass extends BaseEntity {
     @Column(nullable = false)
     private String description;
 
+    @Column(nullable = false)
+    private int maxGuestCount;
+
     @JsonIgnore
     @OneToMany(mappedBy = "roomClass", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Room> rooms;
@@ -58,6 +61,7 @@ public class RoomClass extends BaseEntity {
     public RoomClass(RoomClassRequest roomClassRequest) {
         this.title = roomClassRequest.getTitle();
         this.description = roomClassRequest.getDescription();
+        this.maxGuestCount = roomClassRequest.getMaxGuestCount();
         this.basePrice = roomClassRequest.getBasePrice();
         this.images = roomClassRequest.getImages();
         this.features = roomClassRequest.getFeatures();

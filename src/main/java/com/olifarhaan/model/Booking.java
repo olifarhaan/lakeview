@@ -25,6 +25,7 @@ import lombok.Setter;
 /**
  * @author M. Ali Farhan
  */
+
 @Entity
 @Getter
 @Setter
@@ -36,8 +37,8 @@ public class Booking extends BaseEntity {
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
-    @Column(name = "booking_confirmation_code", nullable = false)
-    private String bookingConfirmationCode;
+    @Column(name = "booking_confirmation_code", nullable = false, unique = true)
+    private Long bookingConfirmationCode;
 
     @ManyToOne
     @JoinColumn(name = "room_id", nullable = false)
@@ -55,11 +56,8 @@ public class Booking extends BaseEntity {
     @Column(name = "check_out_date", nullable = false)
     private LocalDate checkOutDate;
 
-    @Column(name = "adults_count", nullable = false)
-    private int adultsCount;
-
-    @Column(name = "children_count", nullable = false)
-    private int childrenCount;
+    @Column(name = "guest_count", nullable = false)
+    private int guestCount;
 
     @ElementCollection
     @CollectionTable(name = "booking_add_on", joinColumns = @JoinColumn(name = "booking_id"))
@@ -69,14 +67,17 @@ public class Booking extends BaseEntity {
     @Column(name = "booking_amount", nullable = false)
     private double bookingAmount;
 
-    public Booking(BookingRequest bookingRequest, Room room, User user, double bookingAmount) {
+    public Booking(BookingRequest bookingRequest, Room room, User user, double bookingAmount,
+            Long bookingConfirmationCode) {
         this.checkInDate = bookingRequest.getCheckInDate();
         this.checkOutDate = bookingRequest.getCheckOutDate();
-        this.adultsCount = bookingRequest.getAdultsCount();
-        this.childrenCount = bookingRequest.getChildrenCount();
+        this.guestCount = bookingRequest.getGuestCount();
         this.addOns = bookingRequest.getAddOns();
         this.room = room;
+        this.bookingStatus = BookingStatus.CONFIRMED;
+        this.paymentStatus = PaymentStatus.UNPAID;
         this.user = user;
         this.bookingAmount = bookingAmount;
+        this.bookingConfirmationCode = bookingConfirmationCode;
     }
 }

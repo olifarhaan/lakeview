@@ -69,7 +69,7 @@ def test_availability():
         headers=get_headers_with_auth(user_token),
     )
     assert len(response.json()) == 1
-    # assert False
+    assert False
 
 
 def verify_room_class_data(retrieved_data, expected_data):

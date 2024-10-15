@@ -1,6 +1,7 @@
 package com.olifarhaan.service.implementations;
 
 import java.util.List;
+import java.util.UUID;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -9,11 +10,10 @@ import org.springframework.web.server.ResponseStatusException;
 import com.olifarhaan.domains.AddOn;
 import com.olifarhaan.domains.BookingStatus;
 import com.olifarhaan.model.Booking;
-import com.olifarhaan.model.Room;
-import com.olifarhaan.model.RoomClass;
 import com.olifarhaan.model.User;
 import com.olifarhaan.repository.BookingRepository;
 import com.olifarhaan.request.BookingRequest;
+import com.olifarhaan.response.RoomWithBasePrice;
 import com.olifarhaan.service.interfaces.IBookingService;
 import com.olifarhaan.service.interfaces.IRoomService;
 
@@ -66,26 +66,30 @@ public class BookingService implements IBookingService {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Check-in date must come before check-out date");
         }
 
-        Room room = roomService.findOneAvailableRoomByRoomClass(bookingRequest.getCheckInDate(),
-                bookingRequest.getCheckOutDate(), bookingRequest.getRoomClassId())
+        RoomWithBasePrice roomWithBasePrice = roomService
+                .findOneAvailableRoomByRoomClass(bookingRequest.getCheckInDate(),
+                        bookingRequest.getCheckOutDate(), bookingRequest.getRoomClassId())
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.BAD_REQUEST,
                         "No rooms available for the selected dates"));
-        RoomClass roomClass = room.getRoomClass();
-        Booking booking = new Booking(bookingRequest, room, loggedInUser,
-                calculateBookingAmount(roomClass, bookingRequest.getAddOns()));
+        Long bookingConfirmationCode = UUID.randomUUID().getMostSignificantBits() & Long.MAX_VALUE;
+        Booking booking = new Booking(bookingRequest, roomWithBasePrice.room(), loggedInUser,
+                calculateBookingAmount(roomWithBasePrice.basePrice(), bookingRequest.getAddOns()),
+                bookingConfirmationCode);
         return bookingRepository.save(booking);
     }
 
     @Override
-    public Booking findByBookingConfirmationCode(String confirmationCode) {
+    public Booking findByBookingConfirmationCode(Long confirmationCode) {
         return bookingRepository.findByBookingConfirmationCode(confirmationCode)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,
                         "No booking found with booking code :" + confirmationCode));
-
     }
 
-    private double calculateBookingAmount(RoomClass roomClass, List<AddOn> addOns) {
-        return roomClass.getBasePrice()
+    private double calculateBookingAmount(Double basePrice, List<AddOn> addOns) {
+        if (addOns == null || addOns.isEmpty()) {
+            return basePrice;
+        }
+        return basePrice
                 + addOns.stream().mapToDouble(AddOn::getPrice).sum();
     }
 }

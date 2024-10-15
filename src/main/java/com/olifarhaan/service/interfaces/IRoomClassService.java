@@ -15,7 +15,7 @@ public interface IRoomClassService {
     RoomClass getRoomClassById(String roomClassId);
 
     List<RoomClassResponse> findByAvailability(LocalDate checkInDate, LocalDate checkOutDate,
-            @Nullable String roomClassId);
+            @Nullable String roomClassId, @Nullable Integer guestCount);
 
     RoomClass createRoomClass(RoomClassRequest roomClassRequest);
 

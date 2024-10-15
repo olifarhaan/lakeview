@@ -61,7 +61,9 @@ public class RoomClassController {
     public ResponseEntity<List<RoomClassResponse>> findByAvailability(
             @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate checkInDate,
             @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate checkOutDate,
-            @RequestParam(required = false) String roomClassId) {
-        return ResponseEntity.ok(roomClassService.findByAvailability(checkInDate, checkOutDate, roomClassId));
+            @RequestParam(required = false) String roomClassId,
+            @RequestParam(required = false) Integer guestCount) {
+        return ResponseEntity
+                .ok(roomClassService.findByAvailability(checkInDate, checkOutDate, roomClassId, guestCount));
     }
 }

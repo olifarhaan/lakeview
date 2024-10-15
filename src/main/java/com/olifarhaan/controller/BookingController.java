@@ -3,7 +3,6 @@ package com.olifarhaan.controller;
 import java.util.List;
 
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -25,30 +24,33 @@ import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
 @RestController
-@RequestMapping("/bookings")
+@RequestMapping("/api/v1/bookings")
 public class BookingController extends BaseController {
     private final IBookingService bookingService;
 
-    
     @PostMapping
     public ResponseEntity<Booking> saveBooking(@Valid @RequestBody BookingRequest bookingRequest) {
         return ResponseEntity.ok(bookingService.saveBooking(bookingRequest, getLoggedInUser()));
     }
-    
-    @GetMapping("/confirmation/{confirmationCode}")
-    public ResponseEntity<Booking> getBookingByConfirmationCode(@PathVariable String confirmationCode) {
-        return ResponseEntity.ok(bookingService.findByBookingConfirmationCode(confirmationCode));
-    }
-    
+
     @GetMapping
     public ResponseEntity<List<Booking>> getUserBookings() {
         return ResponseEntity.ok(bookingService.getUserBookings(getLoggedInUserId()));
     }
-    
+
+    @GetMapping("/{bookingId}")
+    public ResponseEntity<Booking> getBookingById(@PathVariable String bookingId) {
+        return ResponseEntity.ok(bookingService.getBookingById(bookingId));
+    }
+
     @GetMapping("/all-bookings")
-    @PreAuthorize("hasRole('ROLE_ADMIN')")
     public ResponseEntity<List<Booking>> getAllBookings() {
         return ResponseEntity.ok(bookingService.getAllBookings());
+    }
+
+    @GetMapping("/confirmation/{confirmationCode}")
+    public ResponseEntity<Booking> getBookingByConfirmationCode(@PathVariable Long confirmationCode) {
+        return ResponseEntity.ok(bookingService.findByBookingConfirmationCode(confirmationCode));
     }
 
     @DeleteMapping("/cancel/{bookingId}")

@@ -4,6 +4,7 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
@@ -13,6 +14,7 @@ import com.olifarhaan.model.Room;
 import com.olifarhaan.model.RoomClass;
 import com.olifarhaan.repository.RoomRepository;
 import com.olifarhaan.request.RoomRequest;
+import com.olifarhaan.response.RoomWithBasePrice;
 import com.olifarhaan.service.interfaces.IFloorService;
 import com.olifarhaan.service.interfaces.IRoomClassService;
 import com.olifarhaan.service.interfaces.IRoomService;
@@ -73,12 +75,17 @@ public class RoomService implements IRoomService {
 
     @Override
     public long countAvailableRoomsByRoomClass(LocalDate checkInDate, LocalDate checkOutDate, String roomClassId) {
-        return roomRepository.countAvailableRoomsByRoomClass(checkInDate, checkOutDate, roomClassId);
+        // return roomRepository.countAvailableRoomsByRoomClass(checkInDate,
+        // checkOutDate, roomClassId);
+        return 0;
     }
 
     @Override
-    public Optional<Room> findOneAvailableRoomByRoomClass(LocalDate checkInDate, LocalDate checkOutDate,
+    public Optional<RoomWithBasePrice> findOneAvailableRoomByRoomClass(LocalDate checkInDate, LocalDate checkOutDate,
             String roomClassId) {
-        return roomRepository.findOneAvailableRoomByRoomClass(checkInDate, checkOutDate, roomClassId);
+        List<RoomWithBasePrice> roomWithBasePrices = roomRepository.findOneAvailableRoomByRoomClass(checkInDate,
+                checkOutDate, roomClassId, Pageable.ofSize(1));
+        return roomWithBasePrices.isEmpty() ? Optional.empty() : Optional.of(roomWithBasePrices.get(0));
     }
+
 }

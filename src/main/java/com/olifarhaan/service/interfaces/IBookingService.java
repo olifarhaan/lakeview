@@ -19,7 +19,7 @@ public interface IBookingService {
 
     Booking saveBooking(BookingRequest bookingRequest, User loggedInUser);
 
-    Booking findByBookingConfirmationCode(String confirmationCode);
+    Booking findByBookingConfirmationCode(Long confirmationCode);
 
     List<Booking> getAllBookings();
 

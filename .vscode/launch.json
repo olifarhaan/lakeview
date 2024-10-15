@@ -1,0 +1,20 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "type": "java",
+            "name": "Lake View Application with ENV",
+            "request": "launch",
+            "mainClass": "com.olifarhaan.LakeViewApplication",
+            "projectName": "lakeview",
+            "envFile": "${workspaceFolder}/.env"
+        },
+        {
+            "type": "java",
+            "name": "Lake View Application",
+            "request": "launch",
+            "mainClass": "com.olifarhaan.LakeViewApplication",
+            "projectName": "lakeview"
+        }
+    ]
+}
