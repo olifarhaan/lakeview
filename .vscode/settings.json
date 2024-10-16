@@ -7,5 +7,7 @@
   "java.configuration.updateBuildConfiguration": "interactive",
   "java.jdt.ls.vmargs": "-XX:+UseParallelGC -XX:GCTimeRatio=4 -XX:AdaptiveSizePolicyWeight=90 -Dsun.zip.disableMemoryMapping=true -Xmx8G -Xms100m -Xlog:disable",
   "python.testing.unittestEnabled": false,
-  "python.testing.unittestArgs": ["-v", "-s", "./src", "-p", "*_test.py"]
+  "python.testing.unittestArgs": ["-v", "-s", "./src", "-p", "*_test.py"],
+  "python.testing.pytestArgs": ["./src"],
+  "python.testing.pytestEnabled": true
 }

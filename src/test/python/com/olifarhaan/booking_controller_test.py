@@ -1,4 +1,12 @@
-from setup_helper import setup_user, setup_room_class, setup_room, setup_booking
+from setup_helper import (
+    setup_user,
+    setup_room_class,
+    setup_room,
+    setup_booking,
+    setup_rooms,
+    setup_users,
+    date_range,
+)
 from api_helpers import get_request, get_headers_with_auth
 
 
@@ -21,6 +29,40 @@ def test_create():
     ).json()
     assert len(retrieved_booking_data) == 1
     verify_booking_data(booking_data, retrieved_booking_data[0])
+
+
+def test_complete_booking_workflow():
+
+    # Set up 1 admin and 3 guests
+    users, tokens = setup_users(4)
+    admin_id, guest_id1, guest_id2, guest_id3 = users
+    admin_token, guest_token1, guest_token2, guest_token3 = tokens
+
+    # Set up room class and room
+    room_class_id1, _ = setup_room_class(admin_token)
+    room_class_id2, _ = setup_room_class(admin_token)
+    rooms1 = setup_rooms(admin_token, 3, roomClassId=room_class_id1)
+    rooms2 = setup_rooms(admin_token, 3, roomClassId=room_class_id2)
+
+    verify_availability_feed(guest_token1, 2, [3, 3])
+
+    booking_id, booking_data = setup_booking(
+        guest_token1, {"roomClassId": room_class_id1}
+    )
+
+    verify_availability_feed(guest_token1, 2, [2, 3])
+
+
+def verify_availability_feed(guest_token, noOfRoomClasses, noOfRoomsAvailableArray):
+    check_in_date = date_range(2)[0]
+    check_out_date = date_range(2)[1]
+    response = get_request(
+        f"room-classes/findByAvailability?checkInDate={check_in_date}&checkOutDate={check_out_date}",
+        headers=get_headers_with_auth(guest_token),
+    ).json()
+    assert len(response) == noOfRoomClasses
+    for i in range(noOfRoomClasses):
+        assert response[i]["availableRooms"] == noOfRoomsAvailableArray[i]
 
 
 def verify_booking_data(saved_data, retrieved_data):

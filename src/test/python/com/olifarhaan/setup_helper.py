@@ -33,6 +33,16 @@ def setup_user(data={}):
     user_token = authenticate_and_retrieve_token(retrieved_data["email"], user_data["password"])
     return user_id, user_token, retrieved_data
 
+
+def setup_users(noOfUsers):
+    users = []
+    user_tokens = []
+    for i in range(noOfUsers):
+        user_id, user_token, user_data = setup_user()
+        users.append(user_data)
+        user_tokens.append(user_token)
+    return users, user_tokens
+
 def setup_floor(user_token, data={}):
     floor_data = {
         "name": f"{get_unique_id('Floor')}"
@@ -85,12 +95,18 @@ def setup_rooms(user_token, noOfRooms, roomClassId=None, floorId=None):
 
 def setup_booking(user_token, data={}):
     booking_data = {
-        "checkInDate": (datetime.now() + timedelta(days=1)).isoformat().split('T')[0],
-        "checkOutDate": (datetime.now() + timedelta(days=4)).isoformat().split('T')[0],
-        "roomClassId": setup_room_class(user_token)[0],
+        "checkInDate": date_range(2)[0],
+        "checkOutDate": date_range(2)[1],
+        "roomClassId": data.get("roomClassId") or setup_room_class(user_token)[0],
         "guestCount": 2
     }
     booking_data.update(data)
     response = post_request("bookings", booking_data, headers=get_headers_with_auth(user_token))
     saved_booking_data = response.json()
     return saved_booking_data["id"], saved_booking_data
+
+
+def date_range(n):
+    tomorrow = (datetime.now() + timedelta(days=1)).strftime("%Y-%m-%d")
+    n_days_after = (datetime.now() + timedelta(days=n)).strftime("%Y-%m-%d")
+    return tomorrow, n_days_after

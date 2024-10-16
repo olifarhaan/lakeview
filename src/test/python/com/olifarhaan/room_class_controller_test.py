@@ -1,4 +1,4 @@
-from setup_helper import setup_room_class, setup_user, setup_rooms, get_unique_id
+from setup_helper import setup_room_class, setup_user, setup_rooms, get_unique_id, date_range
 from utils import are_lists_equal
 from api_helpers import get_request, get_headers_with_auth, put_request, delete_request
 
@@ -58,18 +58,19 @@ def test_room_class_crud():
 def test_availability():
     user_id, user_token, _ = setup_user()
     rooms = setup_rooms(user_token, 3)
+    check_in_date = date_range(2)[0]
+    check_out_date = date_range(2)[1]
     response = get_request(
-        f"room-classes/findByAvailability?checkInDate=2024-01-01&checkOutDate=2024-01-02&roomClassId={rooms[0]['roomClass']['id']}",
+        f"room-classes/findByAvailability?checkInDate={check_in_date}&checkOutDate={check_out_date}&roomClassId={rooms[0]['roomClass']['id']}",
         headers=get_headers_with_auth(user_token),
     )
     assert len(response.json()) == 1
 
     response = get_request(
-        f"room-classes/findByAvailability?checkInDate=2024-01-01&checkOutDate=2024-01-02",
+        f"room-classes/findByAvailability?checkInDate={check_in_date}&checkOutDate={check_out_date}",
         headers=get_headers_with_auth(user_token),
     )
     assert len(response.json()) == 1
-    assert False
 
 
 def verify_room_class_data(retrieved_data, expected_data):

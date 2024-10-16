@@ -135,21 +135,22 @@ public interface RoomClassRepository extends JpaRepository<RoomClass, String> {
                 SELECT NEW com.olifarhaan.response.RoomClassResponse(
                     rc,
                     (SELECT COUNT(r) FROM Room r
-                     WHERE r.roomClass = rc
+                     WHERE r.roomClass.id = rc.id
                      AND r.roomStatus = 'AVAILABLE'
                      AND NOT EXISTS (
                          SELECT 1 FROM Booking b
-                         WHERE b.room = r
-                         AND b.bookingStatus NOT IN ('CONFIRMED', 'CHECKED_IN')
+                         WHERE b.room.id = r.id
+                         AND b.bookingStatus IN ('CONFIRMED', 'CHECKED_IN')
                          AND (
-                             (:checkInDate BETWEEN b.checkInDate AND b.checkOutDate)
-                             OR (:checkOutDate BETWEEN b.checkInDate AND b.checkOutDate)
+                             (:checkInDate >= b.checkInDate AND :checkInDate <= b.checkOutDate)
+                             OR (:checkOutDate >= b.checkInDate AND :checkOutDate <= b.checkOutDate)
                          )
                      ))
                 )
                 FROM RoomClass rc
                 WHERE (:roomClassId IS NULL OR rc.id = :roomClassId)
                 AND (:guestCount IS NULL OR rc.maxGuestCount >= :guestCount)
+                ORDER BY rc.createdAt ASC
             """)
     List<RoomClassResponse> findRoomClassAvailability(
             @Param("checkInDate") LocalDate checkInDate,
