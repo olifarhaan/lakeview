@@ -30,7 +30,7 @@ public interface RoomRepository extends JpaRepository<Room, String> {
                 AND NOT EXISTS (
                     SELECT 1 FROM Booking b
                     WHERE b.room = r2
-                    AND b.bookingStatus NOT IN ('CONFIRMED', 'CHECKED_IN')
+                    AND b.bookingStatus IN ('CONFIRMED', 'CHECKED_IN')
                     AND (
                         (:checkInDate BETWEEN b.checkInDate AND b.checkOutDate)
                         OR (:checkOutDate BETWEEN b.checkInDate AND b.checkOutDate)

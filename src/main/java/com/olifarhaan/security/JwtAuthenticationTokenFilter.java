@@ -36,7 +36,7 @@ public class JwtAuthenticationTokenFilter extends OncePerRequestFilter {
     private static final Logger logger = LoggerFactory.getLogger(JwtAuthenticationTokenFilter.class);
     public static final String[] ALLOWED_PATHS = { "/api/v1/auth/**", "/error",
             "/swagger-ui.html", "/swagger-ui/**", "/v3/api-docs/**", "/api-docs/**", "/api/v1/home/**",
-            "/api/v1/cleanup"
+            "/api/v1/cleanup", "/api/v1/room-classes/findByAvailability"
     };
 
     private boolean isUriAllowed(String uri) {

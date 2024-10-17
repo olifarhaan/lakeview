@@ -51,11 +51,14 @@ def setup_floor(user_token, data={}):
     response = post_request("floors", floor_data, headers=get_headers_with_auth(user_token))
     return response.json()["id"], response.json()
 
+
+room_class_prices = [3000.00, 4000.00, 4500.00, 5000.00, 10000.00]
+
 def setup_room_class(user_token, data={}):
     room_class_data = {
         "title": f"{get_unique_id('RoomClass')}",
         "description": f"{get_unique_id('RoomClass')}",
-        "basePrice": 100.00,
+        "basePrice": random.choice(room_class_prices),
         "features": ['HAIR_DRYER', 'HYPOALLERGENIC', 'LINENS', 'PRIVATE_BATHROOM', 'TV'],
         "bedTypes": ['SINGLE', 'KING'],
         "maxGuestCount": 3
@@ -90,10 +93,10 @@ def setup_rooms(user_token, noOfRooms, roomClassId=None, floorId=None):
         room_id, room_data = setup_room(user_token, room_data)
         rooms.append(room_data)
     rooms.reverse()
-    return rooms
+    return rooms, roomClassId, floorId
 
 
-def setup_booking(user_token, data={}):
+def setup_booking(user_token, data={}, checkStatus=True):
     booking_data = {
         "checkInDate": date_range(2)[0],
         "checkOutDate": date_range(2)[1],
@@ -101,9 +104,12 @@ def setup_booking(user_token, data={}):
         "guestCount": 2
     }
     booking_data.update(data)
-    response = post_request("bookings", booking_data, headers=get_headers_with_auth(user_token))
-    saved_booking_data = response.json()
-    return saved_booking_data["id"], saved_booking_data
+    response = post_request("bookings", booking_data, headers=get_headers_with_auth(user_token), checkStatus=checkStatus)
+    if response.status_code == 200:
+        saved_booking_data = response.json()
+        return saved_booking_data["id"], saved_booking_data
+    else:
+        return None, None
 
 
 def date_range(n):

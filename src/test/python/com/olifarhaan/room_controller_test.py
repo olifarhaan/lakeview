@@ -6,7 +6,7 @@ from room_class_controller_test import verify_room_class_data
 
 def test_room_crud():
     user_id, user_token, _ = setup_user()
-    rooms = setup_rooms(user_token, 3)
+    rooms, roomClassId, floorId = setup_rooms(user_token, 3)
     response = get_request(f"rooms", headers=get_headers_with_auth(user_token))
     assert len(response.json()) == 3
     dataList = response.json()
@@ -39,7 +39,7 @@ def test_room_crud():
 
 
 def verify_room_data(retrieved_data, room_data):
-    verify_room_class_data(retrieved_data["roomClass"], room_data["roomClass"])
+    assert retrieved_data["id"] == room_data["id"]
     verify_floor_data(retrieved_data["floor"], room_data["floor"])
     assert retrieved_data["roomNumber"] == room_data["roomNumber"]
     assert retrieved_data["roomStatus"] == room_data["roomStatus"]

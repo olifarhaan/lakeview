@@ -57,11 +57,11 @@ def test_room_class_crud():
 
 def test_availability():
     user_id, user_token, _ = setup_user()
-    rooms = setup_rooms(user_token, 3)
+    rooms, roomClassId, _ = setup_rooms(user_token, 3)
     check_in_date = date_range(2)[0]
     check_out_date = date_range(2)[1]
     response = get_request(
-        f"room-classes/findByAvailability?checkInDate={check_in_date}&checkOutDate={check_out_date}&roomClassId={rooms[0]['roomClass']['id']}",
+        f"room-classes/findByAvailability?checkInDate={check_in_date}&checkOutDate={check_out_date}&roomClassId={roomClassId}",
         headers=get_headers_with_auth(user_token),
     )
     assert len(response.json()) == 1
