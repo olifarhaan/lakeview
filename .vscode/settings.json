@@ -9,5 +9,6 @@
   "python.testing.unittestEnabled": false,
   "python.testing.unittestArgs": ["-v", "-s", "./src", "-p", "*_test.py"],
   "python.testing.pytestArgs": ["./src"],
-  "python.testing.pytestEnabled": true
+  "python.testing.pytestEnabled": true,
+  "files.eol": "\n"
 }

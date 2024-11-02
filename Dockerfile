@@ -6,13 +6,10 @@ WORKDIR /app
 # Copy all necessary files
 COPY . .
 
-# Set executable permission for the Gradle wrapper
-RUN chmod +x gradlew
+# Set executable permission for the Gradle wrapper and run the build
+RUN chmod +x gradlew && ./gradlew clean build --no-daemon
 
-# Install dependencies and build the application using the Gradle wrapper
-RUN ./gradlew clean build --no-daemon
-
-# Second Stage
+# Second Stage (run)
 FROM openjdk:21-slim
 
 WORKDIR /app
