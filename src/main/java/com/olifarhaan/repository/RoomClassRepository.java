@@ -13,7 +13,7 @@ import com.olifarhaan.response.RoomClassResponse;
 import jakarta.annotation.Nullable;
 
 public interface RoomClassRepository extends JpaRepository<RoomClass, String> {
-   
+
     @Query("""
                 SELECT NEW com.olifarhaan.response.RoomClassResponse(
                     rc,

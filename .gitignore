@@ -40,3 +40,5 @@ out/
 __pycache__/
 venv/
 help.txt
+notepad.txt
+docker.env

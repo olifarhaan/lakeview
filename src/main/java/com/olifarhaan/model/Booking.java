@@ -15,6 +15,7 @@ import jakarta.persistence.ElementCollection;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
@@ -59,7 +60,7 @@ public class Booking extends BaseEntity {
     @Column(name = "guest_count", nullable = false)
     private int guestCount;
 
-    @ElementCollection
+    @ElementCollection(fetch = FetchType.EAGER)
     @CollectionTable(name = "booking_add_on", joinColumns = @JoinColumn(name = "booking_id"))
     @Column(name = "add_on")
     private List<AddOn> addOns = new ArrayList<>();

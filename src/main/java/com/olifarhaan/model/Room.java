@@ -34,8 +34,7 @@ public class Room extends BaseEntity {
     @JoinColumn(name = "floor_id", nullable = false)
     private Floor floor;
 
-    @JsonIgnore
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     @JoinColumn(name = "room_class_id", nullable = false)
     private RoomClass roomClass;
 

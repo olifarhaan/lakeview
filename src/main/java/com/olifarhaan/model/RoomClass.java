@@ -43,17 +43,17 @@ public class RoomClass extends BaseEntity {
     @OneToMany(mappedBy = "roomClass", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Room> rooms;
 
-    @ElementCollection
+    @ElementCollection(fetch = FetchType.EAGER)
     @CollectionTable(name = "room_class_feature", joinColumns = @JoinColumn(name = "room_class_id"))
     @Column(name = "feature")
     private List<Feature> features;
 
-    @ElementCollection
+    @ElementCollection(fetch = FetchType.EAGER)
     @CollectionTable(name = "room_class_bed_type", joinColumns = @JoinColumn(name = "room_class_id"))
     @Column(name = "bed_type")
     private List<BedType> bedTypes;
 
-    @ElementCollection
+    @ElementCollection(fetch = FetchType.EAGER)
     @CollectionTable(name = "room_class_image", joinColumns = @JoinColumn(name = "room_class_id"))
     @Column(name = "image_url")
     private List<String> images;
