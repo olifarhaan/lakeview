@@ -21,8 +21,7 @@ public class BaseController {
     }
 
     public Role getLoggedInUserRole() {
-        return Role.valueOf(((AppUserDetails) AuthContext.getAuthentication().getPrincipal()).getAuthorities()
-                .stream().findFirst().get().getAuthority());
+        return getLoggedInUser().getRole();
     }
 
     public User getLoggedInUser() {

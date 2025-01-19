@@ -63,8 +63,7 @@ public class JwtUtils {
     }
 
     public String generateJwtTokenForPasswordReset(String email, String password) {
-        Map<TokenClaim, Object> claims = Map.of(
-                TokenClaim.EMAIL, email,
+        Map<TokenClaim, Object> claims = Map.of(TokenClaim.EMAIL, email,
                 TokenClaim.PASSWORD_SUBSTRING, password.substring(0, 10));
 
         return generateToken(email, TokenType.PASSWORD_RESET_TOKEN, PASSWORD_RESET_EXPIRATION_MS, claims);

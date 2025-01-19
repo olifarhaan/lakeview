@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -28,6 +29,7 @@ public class FloorController {
     private final IFloorService floorService;
 
     @PostMapping
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<Floor> createFloor(@Valid @RequestBody FloorRequest floorRequest) {
         return ResponseEntity.status(HttpStatus.CREATED).body(floorService.createFloor(floorRequest));
     }
@@ -43,11 +45,13 @@ public class FloorController {
     }
 
     @PutMapping("/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<Floor> updateFloor(@PathVariable String id, @RequestBody FloorRequest floorRequest) {
         return ResponseEntity.ok(floorService.updateFloor(id, floorRequest));
     }
 
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<Void> deleteFloor(@PathVariable String id) {
         floorService.deleteFloor(id);
         return ResponseEntity.noContent().build();

@@ -2,7 +2,7 @@ from setup_helper import setup_floor, setup_user, get_headers_with_auth
 from api_helpers import get_request, delete_request, put_request
 
 def test_floor_crud():
-    user_id, user_token, user_data = setup_user()
+    user_id, user_token, user_data = setup_user({"role": "ADMIN"})
     floor_id, floor_data = setup_floor(user_token)
     response = get_request(f"floors/{floor_id}", headers=get_headers_with_auth(user_token))
     verify_floor_data(response.json(), floor_data)

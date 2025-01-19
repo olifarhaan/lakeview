@@ -4,6 +4,7 @@ import java.sql.SQLException;
 import java.util.List;
 
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -31,6 +32,7 @@ public class RoomController {
     private final IRoomService roomService;
 
     @PostMapping
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<Room> addNewRoom(@Valid @RequestBody RoomRequest roomRequest) {
         return ResponseEntity.ok(roomService.createRoom(roomRequest));
     }
@@ -41,12 +43,14 @@ public class RoomController {
     }
 
     @DeleteMapping("/{roomId}")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<Void> deleteRoom(@PathVariable String roomId) {
         roomService.deleteRoom(roomId);
         return ResponseEntity.noContent().build();
     }
 
     @PutMapping("/{roomId}")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<Room> updateRoom(@PathVariable String roomId, @RequestBody RoomRequest roomRequest) {
         return ResponseEntity.ok(roomService.updateRoom(roomId, roomRequest));
     }

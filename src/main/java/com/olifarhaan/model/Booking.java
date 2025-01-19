@@ -3,6 +3,7 @@ package com.olifarhaan.model;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 import com.olifarhaan.domains.AddOn;
 import com.olifarhaan.domains.BookingStatus;
@@ -68,8 +69,7 @@ public class Booking extends BaseEntity {
     @Column(name = "booking_amount", nullable = false)
     private double bookingAmount;
 
-    public Booking(BookingRequest bookingRequest, Room room, User user, double bookingAmount,
-            Long bookingConfirmationCode) {
+    public Booking(BookingRequest bookingRequest, Room room, User user) {
         this.checkInDate = bookingRequest.getCheckInDate();
         this.checkOutDate = bookingRequest.getCheckOutDate();
         this.guestCount = bookingRequest.getGuestCount();
@@ -78,7 +78,14 @@ public class Booking extends BaseEntity {
         this.bookingStatus = BookingStatus.CONFIRMED;
         this.paymentStatus = PaymentStatus.UNPAID;
         this.user = user;
-        this.bookingAmount = bookingAmount;
-        this.bookingConfirmationCode = bookingConfirmationCode;
+        this.bookingAmount = calculateBookingAmount(room.getRoomClass().getBasePrice(), bookingRequest.getAddOns());
+        this.bookingConfirmationCode = UUID.randomUUID().getMostSignificantBits() & Long.MAX_VALUE;
+    }
+
+    private double calculateBookingAmount(Double basePrice, List<AddOn> addOns) {
+        if (addOns == null || addOns.isEmpty()) {
+            return basePrice;
+        }
+        return basePrice + addOns.stream().mapToDouble(AddOn::getPrice).sum();
     }
 }

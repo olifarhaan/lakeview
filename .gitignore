@@ -36,9 +36,10 @@ out/
 ### VS Code ###
 
 .env
+docker.env
+prod.env
 .pytest_cache
 __pycache__/
 venv/
 help.txt
 notepad.txt
-docker.env

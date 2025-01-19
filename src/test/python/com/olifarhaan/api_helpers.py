@@ -1,15 +1,15 @@
 import json
 import requests
 from datetime import datetime
+import os
 
 base_url = "http://localhost:8080/api/v1"
+# base_url = "https://lakeview-fiu2.onrender.com/api/v1"
 working_dir = "src/test/python/com/olifarhaan"
 
 import random
 import string
 
-def auth_token_demo():
-    return "wiywoaeiurqir"
 
 def get_unique_id(base_id):
     timestamp = datetime.now().strftime("%Y%m%d%H%M%S")
@@ -17,11 +17,15 @@ def get_unique_id(base_id):
     joined_base_id = base_id.replace(" ", "_").lower()
     return f"{joined_base_id}_{timestamp}_{random_str}"
 
+
 def clean_up():
     response = delete_request("cleanup", checkStatus=False)
     if response.status_code != 204:
-        print("\033[91mWARNING: Failed to clean the test database. You must clean the test DB to run tests again, otherwise unexpected results may occur.\033[0m")
+        print(
+            "\033[91mWARNING: Failed to clean the test database. You must clean the test DB to run tests again, otherwise unexpected results may occur.\033[0m"
+        )
     assert response.status_code == 204
+
 
 def post_request(endpoint, data=None, headers=None, checkStatus=True):
     url = f"{base_url}/{endpoint}"
@@ -74,6 +78,7 @@ def authenticate_and_retrieve_token(email, password):
     headers = {"Content-Type": "application/json"}
     response = post_request(auth_uri, auth_data, headers=headers)
     return response.json()["token"]
+
 
 def get_headers_with_auth(token):
     return {"Authorization": f"Bearer {token}", "Content-Type": "application/json"}

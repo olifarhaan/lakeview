@@ -13,18 +13,20 @@ import com.olifarhaan.response.RoomWithBasePrice;
  */
 
 public interface IRoomService {
-    Room createRoom(RoomRequest roomRequest);
+	Room createRoom(RoomRequest roomRequest);
 
-    List<Room> getAllRooms();
+	List<Room> getAllRooms();
 
-    void deleteRoom(String roomId);
+	void deleteRoom(String roomId);
 
-    Room updateRoom(String roomId, RoomRequest roomRequest);
+	Room updateRoom(String roomId, RoomRequest roomRequest);
 
-    Room getRoomById(String roomId);
+	Room getRoomById(String roomId);
 
-    long countAvailableRoomsByRoomClass(LocalDate checkInDate, LocalDate checkOutDate, String roomClassId);
+	Optional<RoomWithBasePrice> findOneAvailableRoomByRoomClass(LocalDate checkInDate, LocalDate checkOutDate,
+			String roomClassId);
 
-    Optional<RoomWithBasePrice> findOneAvailableRoomByRoomClass(LocalDate checkInDate, LocalDate checkOutDate,
-            String roomClassId);
+	List<RoomWithBasePrice> findAllAvailableRoomsByRoomClass(LocalDate checkInDate, LocalDate checkOutDate,
+			String roomClassId);
+
 }

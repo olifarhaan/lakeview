@@ -21,7 +21,6 @@ public interface IBookingService {
 
     Booking findByBookingConfirmationCode(Long confirmationCode);
 
-    List<Booking> getAllBookings();
+    List<Booking> getAllBookings(String userId);
 
-    List<Booking> getUserBookings(String userId);
 }

@@ -18,10 +18,15 @@ import lombok.RequiredArgsConstructor;
 public class AppUserDetailsService implements UserDetailsService {
 
     private final IUserService userService;
+    private final RoleAuthorities roleAuthorities;
 
     @Override
     public UserDetails loadUserByUsername(String userId) throws UsernameNotFoundException {
         User user = userService.findUserById(userId);
-        return AppUserDetails.buildUserDetails(user);
+        return new AppUserDetails(
+                user.getId(),
+                user.getEmail(),
+                user.getPassword(),
+                roleAuthorities.getAuthorities(user.getRole()));
     }
 }

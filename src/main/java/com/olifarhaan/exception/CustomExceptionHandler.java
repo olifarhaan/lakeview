@@ -164,6 +164,16 @@ public class CustomExceptionHandler {
 			Thread.currentThread().interrupt();
 		}
 
+		if (ex instanceof ResponseStatusException responseStatusException) {
+			ExceptionResponse response = new ExceptionResponse(
+					LocalDateTime.now(),
+					responseStatusException.getStatusCode().value(),
+					HttpStatus.valueOf(responseStatusException.getStatusCode().value()).getReasonPhrase(),
+					"Error processing concurrent operation: " + cause.getMessage(),
+					null);
+			return new ResponseEntity<>(response, responseStatusException.getStatusCode());
+		}
+
 		ExceptionResponse response = new ExceptionResponse(
 				LocalDateTime.now(),
 				HttpStatus.INTERNAL_SERVER_ERROR.value(),

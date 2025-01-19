@@ -65,6 +65,6 @@ public class User extends BaseEntity {
 		this.fullName = request.getFullName();
 		this.email = request.getEmail();
 		this.password = encodedPassword;
-		this.role = Role.USER;
+		this.role = request.getRole();
 	}
 }

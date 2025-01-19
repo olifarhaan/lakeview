@@ -4,6 +4,8 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -22,6 +24,7 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class RoomClassService implements IRoomClassService {
     private final RoomClassRepository roomClassRepository;
+    private final Logger logger = LoggerFactory.getLogger(RoomClassService.class);
 
     @Override
     public List<RoomClass> getAllRoomClasses() {
@@ -30,12 +33,14 @@ public class RoomClassService implements IRoomClassService {
 
     @Override
     public RoomClass getRoomClassById(String roomClassId) {
+        logger.debug("Getting room class by id: {}", roomClassId);
         return roomClassRepository.findById(roomClassId)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Room class not found"));
     }
 
     @Override
     public RoomClass createRoomClass(RoomClassRequest roomClassRequest) {
+        logger.debug("Creating room class");
         return roomClassRepository.save(new RoomClass(roomClassRequest));
     }
 
@@ -43,11 +48,15 @@ public class RoomClassService implements IRoomClassService {
     @Transactional(readOnly = true)
     public List<RoomClassResponse> findByAvailability(LocalDate checkInDate, LocalDate checkOutDate,
             @Nullable String roomClassId, @Nullable Integer guestCount) {
+        logger.debug(
+                "Finding room class availability with checkInDate: {}, checkOutDate: {}, roomClassId: {}, guestCount: {}",
+                checkInDate, checkOutDate, roomClassId, guestCount);
         return roomClassRepository.findRoomClassAvailability(checkInDate, checkOutDate, roomClassId, guestCount);
     }
 
     @Override
     public RoomClass updateRoomClass(String roomClassId, RoomClassRequest roomClassRequest) {
+        logger.debug("Updating room class with id: {}", roomClassId);
         RoomClass roomClass = getRoomClassById(roomClassId);
         Optional.ofNullable(roomClassRequest.getTitle()).ifPresent(roomClass::setTitle);
         Optional.ofNullable(roomClassRequest.getDescription()).ifPresent(roomClass::setDescription);
@@ -64,6 +73,7 @@ public class RoomClassService implements IRoomClassService {
 
     @Override
     public void deleteRoomClass(String roomClassId) {
+        logger.debug("Deleting room class with id: {}", roomClassId);
         roomClassRepository.deleteById(roomClassId);
     }
 }

@@ -4,7 +4,7 @@ from api_helpers import get_request, get_headers_with_auth, put_request, delete_
 
 
 def test_room_class_crud():
-    user_id, user_token, _ = setup_user()
+    user_id, user_token, _ = setup_user({"role": "ADMIN"})
 
     room_class_id1, room_class_data1 = setup_room_class(user_token)
     retrieved_data1 = get_request(
@@ -56,7 +56,7 @@ def test_room_class_crud():
 
 
 def test_availability():
-    user_id, user_token, _ = setup_user()
+    user_id, user_token, _ = setup_user({"role": "ADMIN"})
     rooms, roomClassId, _ = setup_rooms(user_token, 3)
     check_in_date = date_range(2)[0]
     check_out_date = date_range(2)[1]

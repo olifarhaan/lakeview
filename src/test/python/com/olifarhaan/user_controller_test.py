@@ -24,6 +24,7 @@ def test_get_user():
 
 
 def test_delete_user():
+    admin_id, admin_token, admin_data = setup_user({"role": "ADMIN"})
     user_id, user_token, user_data = setup_user()
     user_id1, user_token1, user_data1 = setup_user()
 
@@ -46,6 +47,9 @@ def test_delete_user():
         f"users/{user_id}", get_headers_with_auth(user_token), checkStatus=False
     )
     assert response.status_code == 401  # Since the token is invalid now
+
+    response = delete_request(f"users/{admin_id}", get_headers_with_auth(admin_token))
+    assert response.status_code == 204
 
 
 def test_update_user():

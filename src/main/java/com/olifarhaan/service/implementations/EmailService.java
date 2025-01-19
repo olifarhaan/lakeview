@@ -24,6 +24,7 @@ public class EmailService {
 
     @Async
     public void sendPasswordResetEmail(String to, String resetToken) {
+        logger.debug("Sending password reset email to: {}", to);
         String subject = "Password Reset";
         String link = String.format("%s?token=%s", resetPasswordFrontendUrl, resetToken);
         String text = "Click the following link to reset your password: " + link;
@@ -32,11 +33,12 @@ public class EmailService {
 
     private void sendEmail(String to, String subject, String text) {
         try {
+            logger.debug("Creating MIME message");
             MimeMessage mimeMessage = javaMailSender.createMimeMessage();
             MimeMessageHelper helper = new MimeMessageHelper(mimeMessage, "utf-8");
             helper.setTo(to);
             helper.setSubject(subject);
-            helper.setText(text, true); // true indicates HTML content
+            helper.setText(text, true);
 
             javaMailSender.send(mimeMessage);
         } catch (Throwable e) {

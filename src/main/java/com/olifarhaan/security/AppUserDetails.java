@@ -28,8 +28,19 @@ public class AppUserDetails implements UserDetails {
     private String password;
     private Collection<GrantedAuthority> authorities;
 
+    /*
+     * Build user details from user
+     * 
+     * hasRole('ADMIN') looks for authority ROLE_ADMIN
+     * hasAuthority('ROLE_ADMIN') looks for exact match
+     * 
+     * @param user
+     * 
+     * @return AppUserDetails
+     */
     public static AppUserDetails buildUserDetails(User user) {
-        List<GrantedAuthority> authorities = List.of(new SimpleGrantedAuthority(user.getRole().name()));
+        List<GrantedAuthority> authorities = List
+                .of(new SimpleGrantedAuthority(String.format("ROLE_%s", user.getRole().name())));
         return new AppUserDetails(
                 user.getId(),
                 user.getEmail(),
@@ -37,7 +48,7 @@ public class AppUserDetails implements UserDetails {
                 authorities);
 
     }
-    
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return authorities;

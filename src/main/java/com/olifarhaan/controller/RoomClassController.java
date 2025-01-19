@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -41,17 +42,20 @@ public class RoomClassController {
     }
 
     @PostMapping
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<RoomClass> createRoomClass(@Valid @RequestBody RoomClassRequest roomClassRequest) {
         return ResponseEntity.ok(roomClassService.createRoomClass(roomClassRequest));
     }
 
     @PutMapping("/{roomClassId}")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<RoomClass> updateRoomClass(@PathVariable String roomClassId,
             @RequestBody RoomClassRequest roomClassRequest) {
         return ResponseEntity.ok(roomClassService.updateRoomClass(roomClassId, roomClassRequest));
     }
 
     @DeleteMapping("/{roomClassId}")
+    @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<Void> deleteRoomClass(@PathVariable String roomClassId) {
         roomClassService.deleteRoomClass(roomClassId);
         return ResponseEntity.noContent().build();

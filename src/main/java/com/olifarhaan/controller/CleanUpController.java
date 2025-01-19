@@ -34,12 +34,12 @@ public class CleanUpController {
     @DeleteMapping
     @Transactional
     public ResponseEntity<Void> cleanUpDB() {
+        bookingRepository.deleteAll();
         roomRepository.deleteAll();
         roomClassRepository.deleteAll();
-        bookingRepository.deleteAll();
         floorRepository.deleteAll();
         userRepository.deleteAll();
-        
+
         return ResponseEntity.noContent().build();
     }
 }
