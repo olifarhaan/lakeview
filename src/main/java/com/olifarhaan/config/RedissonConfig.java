@@ -6,23 +6,27 @@ import org.redisson.config.Config;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.DependsOn;
+import org.springframework.context.annotation.Profile;
 
 @Configuration
-@DependsOn("embeddedRedisConfig")
 public class RedissonConfig {
 
-    @Value("${spring.redis.host}")
-    private String REDIS_HOST;
-
-    @Value("${spring.redis.port}")
-    private int REDIS_PORT;
-
     @Bean
-    public RedissonClient redissonClient() {
+    @Profile("dev")
+    public RedissonClient redissonClientDev(@Value("${spring.redis.host}") String REDIS_HOST,
+            @Value("${spring.redis.port}") int REDIS_PORT) {
         Config config = new Config();
         config.useSingleServer()
                 .setAddress(String.format("redis://%s:%d", REDIS_HOST, REDIS_PORT));
         return Redisson.create(config);
     }
+
+    @Bean
+    @Profile("!dev")
+    public RedissonClient redissonClient(@Value("${spring.redis.connection-string}") String REDIS_CONNECTION_STRING) {
+        Config config = new Config();
+        config.useSingleServer().setAddress(REDIS_CONNECTION_STRING);
+        return Redisson.create(config);
+    }
+
 }
