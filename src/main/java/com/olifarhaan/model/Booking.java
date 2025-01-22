@@ -17,6 +17,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import jakarta.persistence.FetchType;
+import jakarta.persistence.Index;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
@@ -31,7 +32,12 @@ import lombok.Setter;
 @Entity
 @Getter
 @Setter
-@Table(name = "bookings")
+@Table(name = "bookings", indexes = {
+        @Index(name = "idx_booking_room_dates", columnList = "room_id,check_in_date,check_out_date"),
+        @Index(name = "idx_booking_user", columnList = "user_id"),
+        @Index(name = "idx_booking_status_dates", columnList = "booking_status,check_in_date,check_out_date"),
+        @Index(name = "idx_booking_confirmation", columnList = "booking_confirmation_code", unique = true)
+})
 @NoArgsConstructor
 public class Booking extends BaseEntity {
 

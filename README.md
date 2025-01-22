@@ -1,105 +1,116 @@
-# Starter Security Application
+# LakeView - Enterprise Hotel Management System
+
+[![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](LICENSE)
+![Java](https://img.shields.io/badge/Java-21-orange)
+![Spring Boot](https://img.shields.io/badge/Spring%20Boot-3.3.4-green)
 
 ## Overview
 
-A starter template for building secure and scalable backend services using Spring Boot, JWT, and MySQL. You can use this project as a starting point for your own backend services. It has a Python testing suite for writing and running tests.
+LakeView is a robust, enterprise-grade hotel management system built with Spring Boot 3.3.4 and Java 21. It provides comprehensive APIs for hotel operations, room management, and booking services with a focus on scalability, security, and performance.
 
-The Starter Security Application is a robust, Spring Boot-based backend service designed to provide secure user authentication and authorization. It features a RESTful API, JWT-based security, and seamless integration with a MySQL database. The application also supports email notifications for password resets and is fully containerized for easy deployment.
+## Key Features
 
-## Why Should You Use This Project as a Starter Template?
+### 🏗️ Architecture
+- Implemented a modular, scalable architecture using Spring Boot 3.x
+- Achieved clean separation of concerns with layered architecture
+- Integrated comprehensive logging and monitoring capabilities
 
-- **Comprehensive Security**: Implements industry-standard JWT-based authentication, ensuring secure user sessions.
-- **Scalable Architecture**: Built with Spring Boot, allowing for easy scaling and integration with other services.
-- **Dockerized Environment**: Simplifies deployment and testing with Docker and Docker Compose, making it easy to set up and run in any environment.
-- **Python Testing Suite**: Includes a Python-based testing framework, providing flexibility and ease of use for writing and running tests.
-- **OpenAPI Documentation**: Automatically generated API documentation helps developers understand and interact with the API efficiently.
-- **Modular Design**: The codebase is organized into clear modules, making it easy to extend and maintain.
+### 🔒 Security
+- Implemented JWT-based authentication with role-based access control
+- Secured endpoints with Spring Security
+- Integrated email verification system
+- Protected against concurrent booking conflicts using distributed locking
 
-## Prerequisites
+### 💪 Performance
+- Implemented Redis-based distributed locking for concurrent bookings
+- Optimized database queries for room availability checks
+- Utilized connection pooling for improved database performance
+- Implemented asynchronous operations for non-blocking operations
 
-- Docker and Docker Compose
+### 🏢 Enterprise Features
 
+#### Room Management
+- Hierarchical room classification system
+- Dynamic pricing models
+- Real-time availability tracking
+- Multi-floor support
+
+#### Booking System
+- Concurrent booking handling
+- Automated confirmation emails
+- Flexible payment status tracking
+- Guest management
+
+### 🔧 Technical Stack
+- **Backend**: Spring Boot 3.3.4
+- **Database**: MySQL 8.0
+- **Cache**: Redis with Redisson
+- **Documentation**: OpenAPI/Swagger
+- **Testing**: Python Testing Suite
+- **Container**: Docker & Docker Compose
+- **Build**: Gradle
 
 ## Getting Started
 
-### Clone the Repository
+### Prerequisites
+- Docker and Docker Compose
+- JDK 21
+- Python 3.x (for testing)
 
-```bash
-git clone https://github.com/yourusername/boot-starter-security.git
-cd boot-starter-security
-```
+### Quick Start
 
-### Environment Configuration
+1. Clone the repository
+    ```bash
+    git clone https://github.com/yourusername/lakeview.git
+    cd lakeview
+    ```
 
-Create a `.env` file in the root directory with the following content:
+2. Configure environment variables
+    ```bash
+    cp .env.example .env
+    # Edit .env with your configurations
+    ```
 
-```
-DB_URL=jdbc:mysql://mysqlhost:3306/boot_starter_security_db
-DB_USERNAME=root
-DB_PASSWORD=password
-CORS_ALLOWED_ORIGINS=http://localhost:5173
-AUTH_TOKEN_JWT_SECRET=your_jwt_secret
-AUTH_TOKEN_EXPIRATION_IN_MILS=3600000
-AUTH_TOKEN_PASSWORD_RESET_EXPIRATION_IN_MILS=10000000
-EMAIL_USERNAME=your_email@gmail.com
-EMAIL_PASSWORD=your_email_password
-PRODUCTION_URL=https://starter-security-api.azurewebsites.net
-```
+3. Start the application
+    ```bash
+    docker-compose up --build
+    ```
 
-### Build and Run with Docker
+Access points:
+- API: http://localhost:8080
+- API Documentation: http://localhost:8080/swagger-ui.html
 
-1. **Build the Docker images and start the containers:**
+## Documentation
 
-   ```bash
-   docker-compose up --build
-   ```
+Comprehensive API documentation is available through Swagger UI after starting the application. The documentation includes:
+- Detailed endpoint descriptions
+- Request/Response schemas
+- Authentication requirements
+- Testing examples
 
-   This will start the MySQL database, the Spring Boot application, and a Python container for testing.
+## Testing
 
-### Accessing the Application
+The application includes a comprehensive Python testing suite. For VS Code users, install:
+- `littlefoxteam.vscode-python-test-adapter`
+- `hbenl.vscode-test-explorer`
 
-- The application will be accessible at `http://localhost:8080`.
-- The MySQL database will be accessible at `localhost:3307`.
+## Deployment
 
-
-## Project Structure
-
-- **src/main/java/com/olifarhaan**: Contains the main application code, including configuration, controllers, services, and models.
-- **src/test/python**: Contains Python scripts for testing the application.
-- **Dockerfile**: Defines the Docker image for the Spring Boot application.
-- **docker-compose.yml**: Defines the services for Docker Compose, including the application, MySQL, and Python testing environment.
-- **build.gradle**: Gradle build configuration file.
-
-## Key Components
-
-### Spring Boot Application
-
-- **Main Application**: `StarterSecurityApplication.java`
-- **Security Configuration**: `WebSecurityConfig.java`
-- **User Service**: `UserService.java`
-- **Email Service**: `EmailService.java`
-
-### Python Testing
-
-- **Setup Helper**: `setup_helper.py`
-- **API Helpers**: `api_helpers.py`
-- **User Controller Tests**: `user_controller_test.py`
-
-For the tests to run you have to install the vscode extension `littlefoxteam.vscode-python-test-adapter` & `hbenl.vscode-test-explorer`
-After installing the extension you can run the tests by clicking on the test explorer button on the left sidebar and then clicking on the run button.
-
-## OpenAPI Documentation
-
-The application includes OpenAPI documentation, which can be accessed at `http://localhost:8080/swagger-ui.html`.
-
-## Contributing
-
-Contributions are welcome! Please fork the repository and submit a pull request for any improvements or bug fixes.
+The application is containerized and can be deployed to any Docker-compatible environment. Production deployment uses:
+- Render [https://render.com/]
+- Redis.io [https://redis.io/]
+- Aiven for MySQL [https://aiven.io/]
 
 ## License
 
-This project is licensed under the Apache License 2.0. See the [LICENSE](LICENSE) file for details.
+This project is licensed under the Apache License 2.0 - see the [LICENSE](LICENSE) file for details.
 
-## Contact
+## Author
 
-For any inquiries, please contact M. Ali Farhan at [alifarhan231087@gmail.com](mailto:alifarhan231087@gmail.com).
+**M. Ali Farhan**
+- LinkedIn: [olifarhaan](https://linkedin.com/in/olifarhaan)
+- Email: [alifarhan231087@gmail.com](mailto:alifarhan231087@gmail.com)
+
+---
+
+<p align="center">Made with ❤️ by M. Ali Farhan</p>

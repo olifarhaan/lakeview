@@ -12,14 +12,22 @@ import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
+import jakarta.persistence.Index;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Entity
-@Table(name = "users")
+@Getter
+@Setter
+@Table(name = "users", indexes = {
+		@Index(name = "idx_user_email", columnList = "email", unique = true),
+		@Index(name = "idx_user_phone", columnList = "phone_number", unique = true)
+})
 @Data
 @NoArgsConstructor
 @EqualsAndHashCode(callSuper = true)

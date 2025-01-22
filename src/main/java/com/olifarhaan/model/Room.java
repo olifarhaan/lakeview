@@ -12,6 +12,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import jakarta.persistence.FetchType;
+import jakarta.persistence.Index;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
@@ -24,7 +25,10 @@ import lombok.Setter;
  * @author M. Ali Farhan
  */
 @Entity
-@Table(name = "rooms")
+@Table(name = "rooms", indexes = {
+        @Index(name = "idx_room_class_status", columnList = "room_class_id,room_status"),
+        @Index(name = "idx_room_number_floor", columnList = "room_number,floor_id", unique = true)
+})
 @Getter
 @Setter
 @AllArgsConstructor
